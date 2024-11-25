@@ -1,0 +1,525 @@
+CREATE DATABASE database_deliverable;
+USE database_deliverable; 
+
+CREATE TABLE business_sector(
+   Id_business_sector INT AUTO_INCREMENT,
+   business_sector_name VARCHAR(25) NOT NULL,
+   PRIMARY KEY(Id_business_sector)
+);
+
+CREATE TABLE job  (
+   Id_job INT AUTO_INCREMENT,
+   nom_job VARCHAR(25) NOT NULL,
+   PRIMARY KEY(Id_job )
+);
+
+
+CREATE TABLE agency (
+   Id_agency  INT AUTO_INCREMENT,
+   agency_name  VARCHAR(30) NOT NULL,
+   agency_town  VARCHAR(25),
+   agency_department  INT,
+   agency_region  VARCHAR(20),
+   PRIMARY KEY(Id_agency ),
+   UNIQUE(agency_name )
+);
+
+
+CREATE TABLE sensor(
+   ID_sensor INT AUTO_INCREMENT,
+   sensor_town VARCHAR(25),
+   sensor_department INT,
+   sensor_region VARCHAR(20),
+   Id_agency  INT NOT NULL,
+   Id_business_sector INT NOT NULL,
+   PRIMARY KEY(ID_sensor),
+   FOREIGN KEY(Id_agency ) REFERENCES agency (Id_agency ),
+   FOREIGN KEY(Id_business_sector) REFERENCES business_sector(Id_business_sector)
+);
+
+
+CREATE TABLE measure(
+   Id_measure INT AUTO_INCREMENT,
+   ref_measure INT,
+   measure_date DATE,
+   num_measure INT,
+   measure_gaz_name VARCHAR(20),
+   measure_gaz_type VARCHAR(3),
+   amount DECIMAL(12,9),
+   ID_sensor INT NOT NULL,
+   PRIMARY KEY(Id_measure),
+   FOREIGN KEY(ID_sensor) REFERENCES sensor(ID_sensor)
+);
+
+
+
+  CREATE TABLE staff_member (
+   Id_staff_member  INT AUTO_INCREMENT,
+   staff_member_firstname  VARCHAR(25) NOT NULL,
+   staff_member_lastname  VARCHAR(25),
+   birth_date DATE NOT NULL CHECK (birth_date < '2006-01-01'),
+   starting_date DATE NOT NULL,
+   town VARCHAR(25) NOT NULL,
+   postal_code INT NOT NULL CHECK(postal_code > 0),
+   road VARCHAR(50) NOT NULL,
+   road_number INT NOT NULL,
+   Id_agency  INT NOT NULL,
+   Id_job INT NOT NULL,
+   PRIMARY KEY(Id_staff_member ),
+   FOREIGN KEY(Id_agency ) REFERENCES agency (Id_agency ),
+   FOREIGN KEY(Id_job  ) REFERENCES job  (Id_job  )
+
+);
+
+CREATE TABLE report(
+   Id_report INT AUTO_INCREMENT,
+   report_title VARCHAR(50) NOT NULL,
+   report_date DATE NOT NULL,
+   content VARCHAR(250),
+   Id_measure INT,
+   PRIMARY KEY(Id_report),
+   UNIQUE(content),
+   FOREIGN KEY(Id_measure) REFERENCES measure(Id_measure)
+);
+
+
+
+CREATE TABLE redact(
+   Id_staff_member  INT,
+   Id_report INT,
+   PRIMARY KEY(Id_staff_member , Id_report),
+   FOREIGN KEY(Id_staff_member ) REFERENCES staff_member (Id_staff_member ),
+   FOREIGN KEY(Id_report) REFERENCES report(Id_report)
+);
+
+
+INSERT INTO business_sector VALUES 
+(1, "Agriculture"),
+(2, "Industry"),
+(3, "Transportation"),
+(4, "Waste Management"),
+(5, "Residential");
+
+INSERT INTO job VALUES 
+(1, "Administrative Agent"),
+(2, "Technical Agent"),
+(3, "Agency Chief");
+
+
+
+INSERT INTO agency  VALUES 
+(1, "agency  de Chartres", "Chartres", 40, "Centre Val de Loire"),
+(2, "agency  du Sud", "Toulon", 83, "PACA"),
+(3, "agency  du Tarne", "Toulouse", 81, "Occitanie"),
+(4, "agency  Landes de Gascogne", "Bordeaux", 33, "Nouvelle-Aquitaine");
+
+
+INSERT INTO sensor VALUES 
+(1, "Paris", 70, "Ile de France", 1, 3),
+(2, "Lyon", 69, "Auvergne-Rhone-Alpes", 2, 1),
+(3, "Marseille", 13, "PACA", 2, 2),
+(4, "Toulouse", 31, "Occitanie", 3, 2),
+(5, "Bordeaux", 33, "Nouvelle-Aquitaine", 4, 4),
+(6, "Nice", 6, "PACA", 2, 3),
+(7, "Nantes", 44, "Pays de la Loire", 1, 5),
+(8, "Montpellier", 34, "Occitanie", 3, 1);
+
+
+INSERT INTO staff_member  VALUES 
+(1, "Dubois", "Jean", '1987-10-05', '2020-03-01', "Paris", 70, "road des Lilas", 12, 1, 1),
+(2, "Martin", "Marie", '1992-09-25', '2018-01-01', "Lyon", 69, "avenue Victor Hugo", 8, 2, 2),
+(3, "Lefevre", "Pierre", '1980-11-03', '2016-06-12', "Marseille", 13, "road des Roses", 45, 2, 3),
+(4, "Leroy", "Sophie", '1975-07-18', '2016-06-12', "Lille", 59, "road de la Paix", 20, 1, 1),
+(5, "Moreau", "Paul", '1995-04-02', '2016-06-12', "Toulouse", 31, "road du Commerce", 6, 3, 1),
+(6, "Garcia", "Isabelle", '1988-08-14', '2016-07-21', "Bordeaux", 33, "avenue Foch", 30, 3, 1),
+(7, "Martinez", "Thierry", '1979-12-29', '2016-07-21', "Nice", 6, "road des Cerisiers", 17, 2, 2),
+(8, "Fernandez", "Emilie", '1990-06-07', '2016-07-21', "Nantes", 44, "boulevard Gambetta", 9, 1, 2),
+(9, "Petit", "Lucas", '1983-03-20', '2014-08-01', "Strasbourg", 67, "road des Alouettes", 3, 1, 1),
+(10, "Rousseau", "Anne", '1985-09-12', '2016-08-01', "Montpellier", 34, "avenue de la Republique", 15, 1, 1),
+(11, "Girard", "Olivier", '1978-11-05', '2016-08-01', "Rennes", 35, "road des Orangers", 22, 1, 2),
+(12, "Bernard", "Charlotte", '1991-02-28', '2017-04-05', "Lyon", 69, "avenue des Acacias", 18, 4, 1),
+(13, "Lefort", "Thomas", '1982-06-19', '2022-04-05', "Toulouse", 31, "road des Violettes", 7, 3, 3),
+(14, "Robin", "Julien", '1993-08-09', '2017-04-05', "Paris", 70, "avenue des Champs", 5, 1, 2),
+(15, "Chevalier", "Laura", '1986-01-25', '2023-06-01', "Marseille", 13, "boulevard Voltaire", 13, 2, 1),
+(16, "Masson", "Alexandre", '1994-04-08', '2016-06-01', "Lille", 59, "road des Peupliers", 11, 1, 2),
+(17, "Mathieu", "Camille", '1989-10-30', '2016-06-01', "Bordeaux", 30, "avenue du President", 4, 3, 3),
+(18, "Lemoine", "Manon", '1984-07-15', '2021-06-01', "Nice", 6, "road des Lilas", 10, 2, 2),
+(19, "Mercier", "Nicolas", '1981-09-23', '2016-06-01', "Nantes", 44, "road des Mimosas", 2, 1, 3),
+(20, "Dupont", "Elodie", '1987-12-11', '2016-06-01', "Strasbourg", 67, "avenue du General", 16, 1, 1);
+
+
+
+INSERT INTO measure VALUES 
+(1, 117, '2020-02-01', 1, 'N2O', 'GES', 3.3, 8),
+(2, 382, '2020-03-01', 2, 'N2O', 'GES', 3.25, 8),
+(3, 42, '2018-01-01', 3, 'CO2 bio', 'GES', 440, 4),
+(4, 66, '2016-06-12', 4, 'NH3', 'GRA', 1.32, 3),
+(5, 64, '2016-06-12', 5, 'CO2 bio', 'GES', 460, 7),
+(6, 346, '2018-06-12', 6, 'CH4', 'GES', 1.85, 1),
+(7, 138, '2016-07-21', 7, 'NH3', 'GRA', 1.35, 6),
+(8, 156, '2016-07-21', 8, 'CO2 bio', 'GES', 453, 5),
+(9, 16, '2016-07-21', 9, 'CH4', 'GES', 1.9, 6),
+(10, 379, '2016-08-01', 10, 'NH3', 'GRA', 1.56, 2),
+(11, 76, '2018-08-01', 11, 'CO2 bio', 'GES', 485, 2),
+(12, 138, '2016-08-01', 12, 'CH4', 'GES', 1.83, 8),
+(13, 186, '2017-04-05', 13, 'NH3', 'GRA', 1.12, 5),
+(14, 43, '2017-04-05', 14, 'CO2 bio', 'GES', 492, 5),
+(15, 344, '2017-04-05', 15, 'CH4', 'GES', 1.75, 6),
+(16, 190, '2016-06-01', 16, 'CH4', 'GES', 1.32, 2),
+(17, 221, '2016-06-01', 17, 'NH3', 'GRA', 1.26, 1),
+(18, 26, '2016-06-01', 18, 'PFC', 'GES', 0.0000895, 5),
+(19, 132, '2016-06-01', 19, 'HFC', 'GES', 0.000206, 5),
+(20, 85, '2016-06-01', 20, 'SF6', 'GES', 0.000009, 5),
+(21, 176, '2016-06-01', 21, 'CO2 bio', 'GES', 458, 5),
+(22, 65, '2016-12-05', 22, 'CH4', 'GES', 1.41, 8),
+(23, 259, '2016-12-05', 23, 'NH3', 'GRA', 0.04, 7),
+(24, 142, '2016-12-05', 24, 'PFC', 'GES', 0.0000956, 7),
+(25, 314, '2016-12-05', 25, 'HFC', 'GES', 0.00025, 4),
+(26, 188, '2016-12-05', 26, 'SF6', 'GES', 0.000008, 4),
+(27, 71, '2016-12-05', 27, 'CO2 bio', 'GES', 432, 3),
+(28, 357, '2017-02-01', 28, 'CH4', 'GES', 1.65, 2),
+(29, 328, '2017-02-01', 29, 'NH3', 'GRA', 0.05, 7),
+(30, 386, '2017-02-01', 30, 'PFC', 'GES', 0.0001, 2),
+(31, 328, '2017-02-01', 31, 'CO2 bio', 'GES', 451, 3),
+(32, 178, '2020-03-01', 32, 'CH4', 'GES', 1.71, 7),
+(33, 300, '2020-03-01', 33, 'NH3', 'GRA', 0.045, 7),
+(34, 328, '2017-03-01', 34, 'PFC', 'GES', 0.0000846, 8),
+(35, 210, '2017-03-01', 35, 'CO2 bio', 'GES', 472, 1),
+(36, 87, '2017-04-01', 36, 'CH4', 'GES', 1.68, 5),
+(37, 362, '2017-04-01', 37, 'NH3', 'GRA', 0.042, 2),
+(38, 138, '2017-04-01', 38, 'PFC', 'GES', 0.0000832, 2),
+(39, 73, '2017-04-01', 39, 'CO2 bio', 'GES', 478, 7),
+(40, 2, '2016-03-01', 40, 'CO2 bio', 'GES', 485, 8),
+(41, 121, '2016-03-01', 41, 'CO2 non bio', 'GES', 560, 1),
+(42, 340, '2016-04-01', 42, 'CO2 bio', 'GES', 472, 8),
+(43, 36, '2016-04-01', 43, 'CO2 non bio', 'GES', 600, 5),
+(44, 224, '2016-05-01', 44, 'CO2 bio', 'GES', 470, 5),
+(45, 107, '2016-05-01', 45, 'CO2 non bio', 'GES', 595, 3),
+(46, 326, '2016-06-01', 46, 'CO2 bio', 'GES', 435, 2),
+(47, 349, '2018-06-01', 47, 'CO2 non bio', 'GES', 582, 1),
+(48, 76, '2016-07-01', 48, 'CO2 bio', 'GES', 442, 6),
+(49, 253, '2016-07-01', 49, 'CO2 non bio', 'GES', 520, 4),
+(50, 295, '2016-08-01', 50, 'CO2 bio', 'GES', 453, 8);
+INSERT INTO measure VALUES 
+(51, 214, '2016-08-01', 51, 'CO2 non bio', 'GES', 502, 2),
+(52, 280, '2016-09-01', 52, 'CO2 bio', 'GES', 457, 5),
+(53, 124, '2016-09-01', 53, 'CO2 non bio', 'GES', 531, 6),
+(54, 210, '2016-10-01', 54, 'CO2 bio', 'GES', 467, 4),
+(55, 99, '2016-10-01', 55, 'CO2 non bio', 'GES', 562, 8),
+(56, 335, '2016-11-01', 56, 'CO2 bio', 'GES', 472, 8),
+(57, 129, '2016-11-01', 57, 'CO2 non bio', 'GES', 580, 5),
+(58, 111, '2016-12-01', 58, 'CO2 bio', 'GES', 481, 7),
+(59, 131, '2016-12-01', 59, 'CO2 non bio', 'GES', 545, 1),
+(60, 114, '2017-01-01', 60, 'CO2 bio', 'GES', 462, 8),
+(61, 363, '2017-01-01', 61, 'CO2 non bio', 'GES', 587, 8),
+(62, 300, '2017-02-01', 62, 'CO2 bio', 'GES', 441, 5),
+(63, 399, '2017-02-01', 63, 'CO2 non bio', 'GES', 620, 5),
+(64, 363, '2020-09-01', 64, 'NH3', 'GRA', 283.45, 2),
+(65, 84, '2016-09-01', 65, 'CH4', 'GES', 157.82, 6),
+(66, 99, '2020-10-01', 66, 'CO2 bio', 'GES', 34.67, 4),
+(67, 51, '2016-10-01', 67, 'SF6', 'GES', 221.9, 3),
+(68, 92, '2016-11-01', 68, 'HFC', 'GES', 399.12, 2),
+(69, 232, '2016-11-01', 69, 'CH4', 'GES', 92.34, 7),
+(70, 178, '2016-12-01', 70, 'PFC', 'GES', 305.76, 5),
+(71, 146, '2019-12-01', 71, 'NH3', 'GRA', 11.55, 4),
+(72, 199, '2017-01-01', 72, 'SF6', 'GES', 208.2, 6),
+(73, 223, '2017-01-01', 73, 'CO2 bio', 'GES', 379.68, 5),
+(74, 347, '2017-02-01', 74, 'NH3', 'GRA', 136.7, 7),
+(75, 271, '2017-02-01', 75, 'HFC', 'GES', 54.89, 2),
+(76, 312, '2016-09-01', 76, 'CO2 bio', 'GES', 322.41, 4),
+(77, 119, '2016-09-01', 77, 'SF6', 'GES', 72.93, 6),
+(78, 382, '2016-09-01', 78, 'PFC', 'GES', 267.11, 2),
+(79, 240, '2019-09-01', 79, 'N2O', 'GES', 3.28, 2),
+(80, 228, '2016-10-01', 80, 'HFC', 'GES', 189.6, 3),
+(81, 363, '2016-10-01', 81, 'CH4', 'GES', 368.05, 7),
+(82, 210, '2016-11-01', 82, 'NH3', 'GRA', 100.14, 4),
+(83, 113, '2020-11-01', 83, 'CO2 bio', 'GES', 23.77, 4),
+(84, 52, '2016-12-01', 84, 'SF6', 'GES', 346.99, 2),
+(85, 291, '2016-12-01', 85, 'N2O', 'GES', 129.28, 2),
+(86, 395, '2020-01-01', 86, 'PFC', 'GES', 43.46, 5),
+(87, 340, '2017-01-01', 87, 'CH4', 'GES', 245.37, 2),
+(88, 304, '2016-03-01', 88, 'NH3', 'GRA', 416.01, 6),
+(89, 81, '2016-04-01', 89, 'CO2 bio', 'GES', 79.51, 4),
+(90, 151, '2016-04-01', 90, 'SF6', 'GES', 291.83, 8),
+(91, 14, '2016-05-01', 91, 'HFC', 'GES', 20.15, 1),
+(92, 9, '2016-05-01', 92, 'CH4', 'GES', 173.02, 5),
+(93, 275, '2016-06-01', 93, 'PFC', 'GES', 352.36, 2),
+(94, 307, '2016-06-01', 94, 'N2O', 'GES', 112.97, 8),
+(95, 154, '2016-07-01', 95, 'NH3', 'GRA', 65.24, 8),
+(96, 309, '2016-07-01', 96, 'CO2 bio', 'GES', 335.64, 1),
+(97, 244, '2019-08-01', 97, 'SF6', 'GES', 86.72, 7),
+(98, 293, '2016-08-01', 98, 'HFC', 'GES', 254.59, 5),
+(99, 53, '2016-09-01', 99, 'CH4', 'GES', 7.91, 8),
+(100, 350, '2016-09-01', 100, 'PFC', 'GES', 199.47, 8);
+INSERT INTO measure VALUES 
+(101, 353, '2016-10-01', 101, 'N2O', 'GES', 388.24, 8),
+(102, 243, '2016-10-01', 102, 'NH3', 'GRA', 145.16, 1),
+(103, 72, '2016-11-01', 103, 'CO2 bio', 'GES', 32.39, 5),
+(104, 332, '2016-11-01', 104, 'SF6', 'GES', 309.19, 5),
+(105, 377, '2016-12-01', 105, 'HFC', 'GES', 60.8, 6),
+(106, 318, '2016-12-01', 106, 'CH4', 'GES', 276.32, 1),
+(107, 243, '2017-01-01', 107, 'PFC', 'GES', 15.03, 5),
+(108, 105, '2017-01-01', 108, 'N2O', 'GES', 196.73, 6),
+(109, 261, '2017-02-01', 109, 'NH3', 'GRA', 375.51, 2),
+(110, 384, '2017-02-01', 110, 'CO2 bio', 'GES', 105.39, 6),
+(111, 79, '2016-09-01', 111, 'SF6', 'GES', 48.67, 7),
+(112, 198, '2018-09-01', 112, 'HFC', 'GES', 331.07, 1),
+(113, 325, '2019-10-01', 113, 'CH4', 'GES', 82.98, 4),
+(114, 281, '2016-10-01', 114, 'PFC', 'GES', 261.84, 2),
+(115, 79, '2020-11-01', 115, 'N2O', 'GES', 2.62, 1),
+(116, 138, '2016-11-01', 116, 'NH3', 'GRA', 182.14, 4),
+(117, 27, '2016-12-01', 117, 'CO2 bio', 'GES', 361.72, 7),
+(118, 302, '2016-12-01', 118, 'SF6', 'GES', 119.26, 2),
+(119, 304, '2017-01-01', 119, 'HFC', 'GES', 76.07, 3),
+(120, 75, '2017-01-01', 120, 'CH4', 'GES', 344.29, 4),
+(121, 179, '2017-02-01', 121, 'PFC', 'GES', 126.82, 7),
+(122, 99, '2017-02-01', 122, 'N2O', 'GES', 37.54, 6),
+(123, 269, '2016-09-01', 123, 'NH3', 'GRA', 238.95, 1),
+(124, 35, '2016-09-01', 124, 'CO2 bio', 'GES', 407.58, 5),
+(125, 143, '2016-09-01', 125, 'SF6', 'GES', 95.95, 7),
+(126, 194, '2016-09-01', 126, 'HFC', 'GES', 298.52, 2),
+(127, 53, '2016-10-01', 127, 'CH4', 'GES', 26.46, 6),
+(128, 191, '2019-10-01', 128, 'PFC', 'GES', 165.43, 2),
+(129, 253, '2016-11-01', 129, 'N2O', 'GES', 354.68, 4),
+(130, 183, '2018-11-01', 130, 'NH3', 'GRA', 115.69, 1),
+(131, 217, '2016-12-01', 131, 'CO2 bio', 'GES', 58.11, 1),
+(132, 251, '2016-12-01', 132, 'SF6', 'GES', 339.93, 2),
+(133, 54, '2017-01-01', 133, 'HFC', 'GES', 89.29, 5),
+(134, 71, '2017-01-01', 134, 'CH4', 'GES', 268.67, 7),
+(135, 22, '2016-03-01', 135, 'PFC', 'GES', 5.84, 7),
+(136, 105, '2016-04-01', 136, 'N2O', 'GES', 191.18, 7),
+(137, 228, '2020-04-01', 137, 'NH3', 'GRA', 370.36, 6),
+(138, 145, '2020-05-01', 138, 'CO2 bio', 'GES', 108.76, 1),
+(139, 18, '2016-05-01', 139, 'SF6', 'GES', 51.96, 5),
+(140, 242, '2016-06-01', 140, 'HFC', 'GES', 328.85, 8),
+(141, 204, '2016-06-01', 141, 'CH4', 'GES', 85.05, 1),
+(142, 204, '2016-07-01', 142, 'PFC', 'GES', 257.43, 6),
+(143, 239, '2016-07-01', 143, 'N2O', 'GES', 10.24, 7),
+(144, 339, '2016-08-01', 144, 'NH3', 'GRA', 176.3, 5),
+(145, 47, '2016-08-01', 145, 'CO2 bio', 'GES', 365.08, 7),
+(146, 7, '2016-09-01', 146, 'SF6', 'GES', 122.55, 8),
+(147, 395, '2016-09-01', 147, 'HFC', 'GES', 69.38, 7),
+(148, 210, '2016-10-01', 148, 'CH4', 'GES', 346.06, 5),
+(149, 344, '2016-10-01', 149, 'PFC', 'GES', 132.35, 5),
+(150, 99, '2016-11-01', 150, 'N2O', 'GES', 41.78, 4);
+INSERT INTO measure VALUES 
+(151, 46, '2016-11-01', 151, 'NH3', 'GRA', 242.71, 7),
+(152, 193, '2016-12-01', 152, 'CO2 bio', 'GRS', 411.15, 4),
+(153, 388, '2016-12-01', 153, 'SF6', 'GRS', 98.69, 6),
+(154, 314, '2017-01-01', 154, 'HFC', 'GRS', 295.21, 2),
+(155, 218, '2017-01-01', 155, 'CH4', 'GRS', 17.69, 7),
+(156, 53, '2020-02-01', 156, 'PFC', 'GRS', 159.92, 2),
+(157, 345, '2017-02-01', 157, 'N2O', 'GRS', 338.29, 6),
+(158, 317, '2016-09-01', 158, 'NH3', 'GRA', 117.12, 2),
+(159, 216, '2016-09-01', 159, 'CO2 bio', 'GRS', 64.01, 1),
+(160, 71, '2016-10-01', 160, 'SF6', 'GRS', 327.13, 2),
+(161, 389, '2016-10-01', 161, 'HFC', 'GRS', 80.94, 8),
+(162, 110, '2016-11-01', 162, 'CH4', 'GRS', 260.28, 2),
+(163, 218, '2016-11-01', 163, 'PFC', 'GRS', 1.64, 2),
+(164, 168, '2016-12-01', 164, 'N2O', 'GRS', 183.42, 2),
+(165, 360, '2016-12-01', 165, 'NH3', 'GRA', 362.9, 6),
+(166, 42, '2017-01-01', 166, 'CO2 bio', 'GRS', 120.85, 1),
+(167, 281, '2017-01-01', 167, 'SF6', 'GRS', 77.23, 5),
+(168, 45, '2020-02-01', 168, 'HFC', 'GRS', 345.37, 3),
+(169, 220, '2017-02-01', 169, 'CH4', 'GRS', 128.14, 6),
+(170, 327, '2016-09-01', 170, 'PFC', 'GRS', 39.21, 3),
+(171, 280, '2019-09-01', 171, 'N2O', 'GRS', 240.16, 8),
+(172, 155, '2016-09-01', 172, 'NH3', 'GRA', 409.03, 6),
+(173, 242, '2016-09-01', 173, 'CO2 bio', 'GRS', 97.18, 3),
+(174, 381, '2016-10-01', 174, 'SF6', 'GRS', 293.51, 2),
+(175, 200, '2016-10-01', 175, 'HFC', 'GRS', 16.94, 2),
+(176, 316, '2016-11-01', 176, 'CH4', 'GRS', 158.29, 8),
+(177, 206, '2016-11-01', 177, 'PFC', 'GRS', 336.57, 5),
+(178, 208, '2020-12-01', 178, 'N2O', 'GRS', 116.05, 8),
+(179, 327, '2016-12-01', 179, 'NH3', 'GRA', 63.49, 7),
+(180, 210, '2017-01-01', 180, 'CO2 bio', 'GRS', 325.4, 3),
+(181, 23, '2017-01-01', 181, 'SF6', 'GRS', 81.81, 4),
+(182, 288, '2016-03-01', 182, 'HFC', 'GRS', 259.06, 2),
+(183, 70, '2016-04-01', 183, 'CH4', 'GRS', 3.94, 6),
+(184, 59, '2016-04-01', 184, 'PFC', 'GRS', 184.87, 2),
+(185, 139, '2016-05-01', 185, 'N2O', 'GRS', 364.25, 5),
+(186, 316, '2016-05-01', 186, 'NH3', 'GRA', 123.15, 5),
+(187, 10, '2019-06-01', 187, 'CO2 bio', 'GRS', 78.52, 4),
+(188, 127, '2020-06-01', 188, 'SF6', 'GRS', 347.68, 2),
+(189, 169, '2016-07-01', 189, 'HFC', 'GRS', 130.88, 3),
+(190, 367, '2016-07-01', 190, 'CH4', 'GRS', 40.98, 4),
+(191, 100, '2016-08-01', 191, 'PFC', 'GRS', 241.5, 1),
+(192, 287, '2016-08-01', 192, 'N2O', 'GRS', 412.42, 4),
+(193, 387, '2016-09-01', 193, 'NH3', 'GRA', 99.43, 4),
+(194, 234, '2016-09-01', 194, 'CO2 bio', 'GRS', 296.79, 7),
+(195, 41, '2016-10-01', 195, 'SF6', 'GRS', 18.33, 6),
+(196, 64, '2016-10-01', 196, 'HFC', 'GRS', 160.72, 3),
+(197, 65, '2016-11-01', 197, 'CH4', 'GRS', 339.16, 5),
+(198, 209, '2016-11-01', 198, 'PFC', 'GRS', 118.51, 3),
+(199, 194, '2016-12-01', 199, 'N2O', 'GRS', 65.91, 7),
+(200, 294, '2018-12-01', 200, 'NH3', 'GRA', 326.72, 8);
+
+
+
+
+
+
+INSERT INTO report VALUES
+    (1, "classified report", '2021-12-12', "Air quality has improved significantly in recent months, with a decrease in fine particle levels.", 2),
+    (2, "external classified report", '2022-01-03', "Despite industrial pollution, there is a slight improvement in air quality.", 45),
+    (3, "SCP classified report", '2022-02-20', "Recent data shows an increase in nitrogen dioxide levels in certain areas.", 5),
+    (4, "Keter classified report", '2022-03-12', "Air quality is relatively good compared to other major cities, but concerns persist regarding pollutant emissions.", 77),
+    (5, "classified on report", '2022-04-20', "Significant improvement in air quality, with a decrease in sulfur dioxide and fine particle levels.", 193),
+    (6, "neutralized classified report", '2022-05-17', "Air quality remains generally good, although seasonal fluctuations and pollution peaks are observed.", 20),
+    (7, "classified Euclid report", '2022-06-03', "Notable improvement in air quality and a decrease in fine particle levels.", 33),
+    (8, "Thaumiel classified report", '2022-07-14', "Increase in nitrogen dioxide emissions.", 34),
+    (9, "explained classified report", '2022-08-05', "Progress made in reducing pollutant emissions, persistent challenges in air quality remain.", 75),
+    (10, "blank classified report", '2022-09-09', "Significant improvement in air quality. However, high levels of fine particles remain a major concern.", 94),
+    (11, "blue classified report", '2022-10-14', "Atmospheric pollution levels have remained stable over the past year, maintaining relatively good air quality.", 9),
+    (12, "classified green report", '2022-11-06', "High levels of fine particles and sulfur dioxide, requiring concerted government action.", 12),
+    (13, "yellow classified report", '2022-12-08', "Initial data suggests slight improvement, but additional efforts are needed.", 88),
+    (14, "orange classified report", '2023-01-07', "Notable improvement in air quality, but challenges remain.", 54),
+    (15, "red classified report", '2023-02-03', "Atmospheric pollution levels remain high. Efforts needed.", 23),
+    (16, "classified black report", '2023-03-09', "Significant progress in reducing pollutant emissions. However, challenges remain due to its topography trapping atmospheric pollutants.", 31),
+    (17, "undetermined classified report", '2023-04-05', "Improvement in air quality underway, but additional efforts are needed to sustain this trend.", 32),
+    (18, "FAQ classified report", '2023-05-19', "Increase in sulfur dioxide levels, requires controlling pollution sources.", 17),
+    (19, "test classified report", '2023-06-30', "Air quality remains concerning due to high levels of fine particles and nitrogen dioxide. Additional mitigation measures are needed to reverse this trend.", 66),
+    (20, "deviation classified report", '2023-07-18', "Reduction in pollutant emissions, leading to moderate improvement in air quality.", 137);
+
+
+
+    INSERT INTO redact VALUES 
+(1, 20),
+(1, 10),
+(1, 4),
+(2, 12),
+(3, 1),
+(4, 5),
+(5, 6),
+(5, 9),
+(9, 4),
+(10, 15),
+(10, 10),
+(11, 20),
+(16, 9),
+(17, 15),
+(17, 20),
+(18, 1),
+(19, 2),
+(20, 5);
+
+
+create user 'Agent_administratif'@'localhost'
+identified by '111';
+GRANT SELECT ON database_deliverable.business_sector TO 'Agent_administratif'@'localhost';
+GRANT SELECT ON database_deliverable.job TO 'Agent_administratif'@'localhost';
+GRANT SELECT ON database_deliverable.report TO 'Agent_administratif'@'localhost';
+GRANT SELECT ON database_deliverable.measure TO 'Agent_administratif'@'localhost';
+GRANT SELECT ON database_deliverable.agency  TO 'Agent_administratif'@'localhost';
+GRANT SELECT ON database_deliverable.sensor TO 'Agent_administratif'@'localhost';
+GRANT SELECT (Id_staff_member ) on database_deliverable.staff_member  TO 'Agent_administratif'@'localhost';
+GRANT INSERT ON database_deliverable.report TO 'Agent_administratif'@'localhost';
+FLUSH PRIVILEGES;
+
+create user 'Agent_technique'@'localhost'
+identified by '222';
+GRANT SELECT ON database_deliverable.business_sector TO 'Agent_technique'@'localhost';
+GRANT SELECT ON database_deliverable.measure TO 'Agent_technique'@'localhost';
+GRANT SELECT ON database_deliverable.agency  TO 'Agent_technique'@'localhost';
+GRANT SELECT ON database_deliverable.sensor TO 'Agent_technique'@'localhost';
+GRANT SELECT (Id_staff_member ) on database_deliverable.staff_member  TO 'Agent_technique'@'localhost';
+GRANT INSERT ON database_deliverable.measure TO 'Agent_technique'@'localhost';
+FLUSH PRIVILEGES;
+
+
+
+
+
+USE database_deliverable;
+-- 1. List all agencies:
+SELECT DISTINCT agency_name  
+FROM agency ;
+
+-- 2. List all technical staff members of the Bordeaux agency:
+SELECT * FROM staff_member  
+WHERE Id_agency  = (SELECT Id_agency  FROM agency  WHERE agency_town  = 'Bordeaux');
+
+
+-- 3. Provide the total number of deployed sensors.
+SELECT COUNT(*) AS sensor_count 
+FROM sensor;
+
+-- 4. List reports published between 2018 and 2022:
+SELECT * 
+FROM report 
+WHERE report_date BETWEEN '2018-01-01' AND '2022-12-31';
+
+-- 5. Calculate the total greenhouse gas emissions per region in 2020:
+SELECT sensor_region, SUM(amount) AS total_emission
+FROM measure
+JOIN sensor ON measure.ID_sensor = sensor.ID_sensor
+WHERE YEAR(measure_date) = 2020
+AND measure.measure_gaz_name = 'GES'
+GROUP BY sensor_region;
+
+
+-- 6. Display the most polluting business sector in Ile de France:
+SELECT business_sector_name
+FROM business_sector
+JOIN sensor ON business_sector.Id_business_sector = sensor.Id_business_sector
+JOIN measure ON sensor.ID_sensor = measure.ID_sensor
+WHERE sensor_region = 'Ile de France'
+GROUP BY business_sector_name 
+ORDER BY SUM(amount) DESC 
+LIMIT 1;
+
+-- 7. Sort reports regarding NH3 emissions chronologically:
+SELECT report.*
+FROM report
+JOIN measure ON report.Id_measure = measure.Id_measure
+WHERE measure.measure_gaz_name = 'NH3'
+ORDER BY report.report_date;
+
+
+-- 8. Provide the names of technical agents maintaining sensors for acidifying pollutants:
+SELECT DISTINCT staff_member.staff_member_firstname, staff_member_lastname 
+FROM staff_member 
+JOIN redact ON staff_member.Id_staff_member = redact.Id_staff_member 
+JOIN report ON redact.Id_report = report.Id_report
+JOIN measure ON report.Id_measure = measure.Id_measure
+JOIN sensor ON measure.ID_sensor = sensor.ID_sensor
+JOIN agency ON sensor.Id_agency = agency.Id_agency 
+WHERE measure.measure_gaz_name IN ('N2O', 'CO2 bio')
+AND staff_member.Id_job = (SELECT Id_job FROM job WHERE nom_job = 'Technical Agent');
+
+-- 9. For each gas, provide the sum of its emissions (in ppm) in the Ile-de-France region in 2020:
+SELECT measure_gaz_name, SUM(amount) AS total_emission
+FROM measure
+JOIN sensor ON measure.ID_sensor = sensor.ID_sensor
+WHERE sensor_region = 'Ile de France' AND YEAR(measure_date) = 2020
+GROUP BY measure_gaz_name;
+
+-- 10. Provide the productivity rate of administrative agents of the Toulouse agency (based on the number of written reports and their tenure in the position):
+SELECT staff_member.staff_member_firstname, staff_member_lastname, COUNT(report.Id_report) / DATEDIFF(NOW(), staff_member.starting_date) AS productivity_rate
+FROM staff_member 
+JOIN redact ON staff_member.Id_staff_member = redact.Id_staff_member 
+JOIN report ON redact.Id_report = report.Id_report
+JOIN agency ON staff_member.Id_agency = agency.Id_agency 
+WHERE agency.agency_town = 'Toulouse' AND staff_member.Id_job = (SELECT Id_job FROM job WHERE nom_job = 'Administrative Agent')
+GROUP BY staff_member.Id_staff_member ;
+
+-- 11. For a given gas, list reports containing data related to it (the gas name should be a parameter):
+SELECT report.* 
+FROM report 
+JOIN measure ON report.Id_measure = measure.Id_measure 
+WHERE measure.measure_gaz_type = '[gas_name]';
+
+
+-- 12. List regions where there are more sensors than agencies:
+SELECT sensor_region 
+FROM sensor 
+GROUP BY sensor_region 
+HAVING COUNT(DISTINCT Id_agency) < COUNT(DISTINCT ID_sensor);
+
+
+
+
+
+
+
+

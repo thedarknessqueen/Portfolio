@@ -1,0 +1,26 @@
+body{background-color: #005500;}
+footer{background-color: black;height:60px;margin:60px 0 -10px 0;}
+
+.contour-titre{background-color: gold; width: 280px;height: 100px;display: block;margin:0 auto;margin-bottom: 30px;}
+.titre{font-style: bold; color: white;padding:25px 40px 25px 40px; }
+.presentation{background-color: #EEE;border: 1px solid;padding: 10px;}
+.conteneur{width: 100%;padding-right: 15px;padding-left: 15px;margin-right: auto;margin-left: auto;max-width: 1140px;}
+*, ::after, ::before {box-sizing: border-box;}
+.ligne{display: flex;flex-wrap: wrap;margin-right: -15px;margin-left: -15px;}
+
+h1 { text-align: center }
+
+/*Pour centrer le texte*/
+.centre-texte{text-align: center;}
+.aligner-milieu{display: block;margin:0 auto;}
+
+/*Cela va me servir à 'découper' une ligne*/
+.pleine-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 100%;max-width: 100%;}
+.trois-quarts-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 75%;max-width: 75%;}
+.moitie-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 50%;max-width: 50%;}
+.tiers-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 33.333333%;max-width: 33.333333%;}
+.quart-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 25%;max-width: 25%;}
+
+
+/*footer*/
+.texte-footer{color: white;text-align: center;} 

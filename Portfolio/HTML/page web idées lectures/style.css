@@ -1,0 +1,39 @@
+
+body {
+  /*color:black;*/
+  background-color:black;
+  background-image:url(file:./fond.JPG);
+  background-repeat:repeat/*no-repeat*/;
+  background-attachment: fixed;
+}
+
+footer{background-color: black;height:60px;margin:60px 0 -10px 0}
+
+.contour-titre{background-color: black; width: 280px;height: 100px;display: block;margin:0 auto;margin-bottom: 30px}
+.titre{font-style: bold; color: gold;padding:30px 40px 25px 40px; font-family:calibri }
+.presentation{background-color: #CCCCFF;border: 1px solid;padding: 10px;font-family:calibri;font-size:22px}
+.conteneur{width: 100%;padding-right: 15px;padding-left: 15px;margin-right: auto;margin-left: auto;max-width: 1000px}
+/* *, ::after, ::before {box-sizing: border-box;} */
+.ligne{display: flex;flex-wrap: wrap;margin-right: -15px;margin-left: -15px;}
+
+.Aventure{background-color: #FFFACD;padding: 25px;margin-top:20px; font-family:Comic Sans MS}
+.Classique{background-color: #FF9999;padding: 25px;margin-top:20px;font-family:Comic Sans MS}
+.Fantastique{background-color: #99FFFF;padding: 25px;margin-top:30px;font-family:Comic Sans MS}
+.Historique{background-color: #99FFCC;padding: 25px;margin-top:30px;font-family:Comic Sans MS}
+
+
+/*Pour centrer le texte*/
+.centre-texte{text-align: center}
+.aligner-milieu{display: block;margin:0 auto;}
+/*Pour forcer le centrage du texte de niveau Header1 */
+h1 { text-align: center }
+
+/*Cela va me servir à 'découper' une ligne*/
+.pleine-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 100%;max-width: 100%}
+.trois-quarts-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 75%;max-width: 75%}
+.moitie-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 50%;max-width: 50%}
+.tiers-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 33.333333%;max-width: 33.333333%}
+.quart-largeur{position: relative;width: 100%;padding-right: 15px;padding-left: 15px;flex: 0 0 25%;max-width: 25%}
+
+/*footer*/
+.texte-footer{color: white;text-align: center} 
