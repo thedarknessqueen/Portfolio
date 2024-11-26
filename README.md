@@ -8,3 +8,15 @@ Depuis la classe de 2nd, porjet de 1ère et 2ème année d'école d'ingénieur.
 
 ## C++ :
 -  (12/2024)
+
+## HTML :
+- Page web (9/2020)
+- Recette (10/2022)
+
+## Python :
+- Résolution d'équation (1/2024)
+- Théorie des ondes (11/2023)
+- Pendu (10/2023)
+
+## SQL : 
+- Base de donnée (3/2024)
