@@ -16,7 +16,7 @@ Depuis la classe de 2nd, porjet de 1ère et 2ème année d'école d'ingénieur.
 ## Python :
 - Résolution d'équation (1/2024)
 - Théorie des ondes (11/2023)
-- Pendu (10/2023)
+- Pendu (10/2023) (update version 10/2025)
 
 ## SQL : 
 - Base de donnée (3/2024)
