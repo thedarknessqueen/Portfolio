@@ -7,11 +7,12 @@ Depuis la classe de 2nd, porjet de 1ère et 2ème année d'école d'ingénieur.
 - Station Météo (10/2024)
 
 ## C++ :
--  (12/2024)
+-  Jeu de la Vie (12/2024)
 
 ## HTML :
 - Page web (9/2020)
 - Recette (10/2022)
+- Page Web le Bon Plan (1/2025-4/2025)
 
 ## Python :
 - Résolution d'équation (1/2024)
